@@ -9,7 +9,7 @@
 % 3/ finally saves it a .mat file for further use, e.g. loading in the
 %    batch-GUI
 %__________________________________________________________________________
-% Copyright (C) 2018 GIGA Institute
+% Copyright (C) 2019 GIGA Institute
 %
 % Written by C. Phillips, 2019.
 % Cyclotron Research Centre, University of Liege, Belgium
