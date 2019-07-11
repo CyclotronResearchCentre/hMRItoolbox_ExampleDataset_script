@@ -9,6 +9,10 @@
 % 3/ finally saves it a .mat file for further use, e.g. loading in the
 %    batch-GUI
 %__________________________________________________________________________
+% Copyright (C) 2018 GIGA Institute
+%
+% Written by C. Phillips, 2019.
+% Cyclotron Research Centre, University of Liege, Belgium
 
 %% 1/ Finding or defining the 'rooDir' of the data folder.
 % The script successively tries a few options:
