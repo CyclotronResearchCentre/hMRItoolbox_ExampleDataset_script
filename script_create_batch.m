@@ -1,20 +1,27 @@
 %% SCRIPT generating the batch for the hMRI data processing
 %
 % The batch needs the correct path to the data but these are stored on the
-% user's computer. Therefore this script simply
-% 1/ tries to figure out where the data are stored or asks the user to 
-%    specify the main folder manually.
-% 2/ then it sets up the hMRI map creation batch, with the selection of the
-%    provided 'hmri_local_defaults.m' file with default parameters.
-% 3/ finally saves it a .mat file for further use, e.g. loading in the
+% user's computer. Moreover the eTPM's in the local default file relies is
+% defined relative to itself, instead of the hMRI toolbox
+% Therefore this script simply does
+% 1/ figure out where the data are stored or asks the user to specify the
+%    main folder manually
+% 2/ fixes the 'hmri_local_defaults.m' local default files eTPM's defintion
+% 3/ set up the hMRI map creation batch, with the selection of the fixed
+%    'hmri_local_defaults.m' file with default parameters
+% 4/ saves the matlabbatch .mat file for further use, e.g. loading in the
 %    batch-GUI
+% 
+% NOTE:
+% the 'crc_fix_mfile' function must be found either in the current folder
+% or on the path...
 %__________________________________________________________________________
 % Copyright (C) 2019 GIGA Institute
 %
 % Written by C. Phillips, 2019.
 % Cyclotron Research Centre, University of Liege, Belgium
 
-%% 1/ Finding or defining the 'rooDir' of the data folder.
+%% 1/ Finding or defining the 'rootDir' of the data folder.
 % The script successively tries a few options:
 % a) the user explicitly sets up the folder path
 % b) check if the data in are the current working directory
@@ -85,11 +92,17 @@ end
 % Display folder that will be used
 fprintf('\n Using ''rootDir'' (%s).\n',rootDir)
 
-%% 2/ Create the hMRI batch
+%% 2/ Fixing the 'hmri_local_defaults.m' file
+% and keeping one copy of the original one, just in case
+fn_hmri_defs = ...
+    fullfile(rootDir,'Batch_Script_hMRI_Config','hmri_local_defaults.m');
+fn_hmri_defs_copy = crc_fix_mfile(fn_hmri_defs);
+
+%% 3/ Create the hMRI batch
 clear matlabbatch
 % First with the loading of the hmri_local_defaults
 matlabbatch{1}.spm.tools.hmri.hmri_config.hmri_setdef.customised = {
-    fullfile(rootDir,'Batch_Script_hMRI_Config','hmri_local_defaults.m')};
+    fn_hmri_defs};
 % Then the map creation with all the field maps
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.output.indir = 'yes';
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.sensitivity.RF_per_contrast.raw_sens_MT = {
@@ -166,6 +179,6 @@ matlabbatch{2}.spm.tools.hmri.create_mpm.subj.raw_mpm.T1 = {
     };
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.popup = true;
 
-%% 3/ save the resulting matlabbatch in a .mat file
+%% 4/ save the resulting matlabbatch in a .mat file
 fn_mat = fullfile(rootDir,'Batch_Script_hMRI_Config','my_Create_Maps_Batch.mat');
 save(fn_mat,'matlabbatch')
