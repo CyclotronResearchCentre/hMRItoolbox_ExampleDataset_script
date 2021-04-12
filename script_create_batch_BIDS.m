@@ -39,19 +39,19 @@ matlabbatch{1}.spm.tools.hmri.hmri_config.hmri_setdef.customised = {
 % Then the map creation with all the field maps
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.output.indir = 'yes';
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.sensitivity.RF_per_contrast.raw_sens_MT = {
-    spm_select('FPListRec',rootDir,'.*headMTw_RB1COR\.nii$')
-    spm_select('FPListRec',rootDir,'.*bodyMTw_RB1COR\.nii$')
+    spm_select('FPListRec',rootDir,'^sub-.*headMTw_RB1COR\.nii$')
+    spm_select('FPListRec',rootDir,'^sub-.*bodyMTw_RB1COR\.nii$')
     };
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.sensitivity.RF_per_contrast.raw_sens_PD = {
-    spm_select('FPListRec',rootDir,'.*headPDw_RB1COR\.nii$')
-    spm_select('FPListRec',rootDir,'.*bodyPDw_RB1COR\.nii$')
+    spm_select('FPListRec',rootDir,'.^sub-*headPDw_RB1COR\.nii$')
+    spm_select('FPListRec',rootDir,'^sub-.*bodyPDw_RB1COR\.nii$')
     };
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.sensitivity.RF_per_contrast.raw_sens_T1 = {
-    spm_select('FPListRec',rootDir,'.*headT1w_RB1COR\.nii$')
-    spm_select('FPListRec',rootDir,'.*bodyT1w_RB1COR\.nii$')
+    spm_select('FPListRec',rootDir,'^sub-.*headT1w_RB1COR\.nii$')
+    spm_select('FPListRec',rootDir,'^sub-.*bodyT1w_RB1COR\.nii$')
     };
 % list of TB1EPI files + find reshuffling for echo 1-2 at same flip angle
-fn_TB1EPI = spm_select('FPListRec',rootDir,'.*_TB1EPI\.nii$');
+fn_TB1EPI = spm_select('FPListRec',rootDir,'^sub-.*_TB1EPI\.nii$');
 l_e1e2 = kron(1:11,[1 1]) + kron(ones(1,11),[0 11]);
 % Adding the "FlipAngleSeries" to facilitate the BIDS-hMRI
 crc_BIDShmri_FAseries(fn_TB1EPI);
@@ -59,18 +59,18 @@ crc_BIDShmri_FAseries(fn_TB1EPI);
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.b1_type.i3D_EPI.b1input = ...
     cellstr(fn_TB1EPI(l_e1e2,:));
 %
-fn_mag = spm_select('FPListRec',rootDir,'.*_magnitude\d\.nii$');
-fn_phd = spm_select('FPListRec',rootDir,'.*_phasediff\.nii$');
+fn_mag = spm_select('FPListRec',rootDir,'^sub-.*_magnitude\d\.nii$');
+fn_phd = spm_select('FPListRec',rootDir,'^sub-.*_phasediff\.nii$');
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.b1_type.i3D_EPI.b0input = ...
     cellstr(char(fn_mag,fn_phd));
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.b1_type.i3D_EPI.b1parameters.b1metadata = 'yes';
 %
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.raw_mpm.MT = ...
-    cellstr(spm_select('FPListRec',rootDir,'.*_acq-MTw.*\.nii$'));
+    cellstr(spm_select('FPListRec',rootDir,'^sub-.*_acq-MTw.*\.nii$'));
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.raw_mpm.PD = ...
-    cellstr(spm_select('FPListRec',rootDir,'.*_acq-PDw.*\.nii$'));
+    cellstr(spm_select('FPListRec',rootDir,'^sub-.*_acq-PDw.*\.nii$'));
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.raw_mpm.T1 = ...
-    cellstr(spm_select('FPListRec',rootDir,'.*_acq-T1w.*\.nii$'));
+    cellstr(spm_select('FPListRec',rootDir,'^sub-.*_acq-T1w.*\.nii$'));
 matlabbatch{2}.spm.tools.hmri.create_mpm.subj.popup = true;
 
 %% 2/ save the resulting matlabbatch in a .mat file
